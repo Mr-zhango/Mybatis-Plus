@@ -24,20 +24,27 @@ public class SimpleTest {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * Mybatis-plus的通用查询方法
+     */
     @Test
     public void selest(){
         List<User> list = userMapper.selectList(null);
-
+        // 数据库中有5个数据
         Assert.assertEquals(5,list.size());
 
        list.forEach(System.out::println);
     }
 
+    /**
+     * mp的基本插入方法
+     */
     @Test
     public void insertTest(){
         User user = new User();
 
-        user.setName("张强");
+        user.setName("测试名字");
+        user.setAge(18);
         user.setManagerId(1088248166370832385L);
         user.setCreateTime(LocalDateTime.now());
 
@@ -45,18 +52,4 @@ public class SimpleTest {
 
         System.out.println("影响记录数:"+insert);
     }
-
-    @Test
-    public void insertTest2(){
-        User user = new User();
-
-        user.setName("张强123");
-        user.setManagerId(1088248166370832385L);
-        user.setCreateTime(LocalDateTime.now());
-        user.setAge(22);
-        int insert = userMapper.insert(user);
-
-        System.out.println("影响记录数:"+insert);
-    }
-
 }
