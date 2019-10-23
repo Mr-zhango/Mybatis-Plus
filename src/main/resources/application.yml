@@ -9,7 +9,7 @@ spring:
 logging:
   level:
     root: warn
-    cn.myfreecloud.mapper: trace
+    cn.myfreecloud.mp.mapper: trace
   pattern:
     # 日志级别,日志内容,换行
     console: '%p %d{YYYY-MM-dd HH:mm:ss,SSS} %m %n'
@@ -17,4 +17,4 @@ logging:
 
 
 mybatis-plus:
-  mapper-locations: classpath*:cn/myfreecloud/mapper/*.xml
+  mapper-locations: classpath*:cn/myfreecloud/mp/mapper/*.xml

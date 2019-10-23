@@ -1,6 +1,5 @@
-package cn.myfreecloud;
+package cn.myfreecloud.mp;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @description:
  */
 @SpringBootApplication
-@MapperScan("cn.myfreecloud.mapper")
+//@MapperScan("cn.myfreecloud.mp.mapper")
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
