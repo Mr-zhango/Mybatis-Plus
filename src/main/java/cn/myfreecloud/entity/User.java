@@ -22,7 +22,7 @@ public class User {
     private Long id;
 
     /** mp 针对实体字段和数据库字段不一样这种情况,设计了@TableField这个注解**/
-    @TableField(value = "name",condition = SqlCondition.LIKE)
+    @TableField(value = "name",condition = SqlCondition.LIKE ,exist = true)
     private String name;
 
     private Integer age;

@@ -6,4 +6,5 @@ import lombok.Data;
 import lombok.ToString;
 
 public interface EmployeeMapper extends BaseMapper<Employee> {
+
 }
