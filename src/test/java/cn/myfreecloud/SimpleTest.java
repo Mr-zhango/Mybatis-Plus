@@ -24,17 +24,20 @@ public class SimpleTest {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 查询参数 null 查询全部,返回List
+     */
     @Test
-    public void selest(){
+    public void selest() {
         List<User> list = userMapper.selectList(null);
 
-        Assert.assertEquals(5,list.size());
+        Assert.assertEquals(8, list.size());
 
-       list.forEach(System.out::println);
+        list.forEach(System.out::println);
     }
 
     @Test
-    public void insertTest(){
+    public void insertTest() {
         User user = new User();
 
         user.setName("张强");
@@ -43,11 +46,11 @@ public class SimpleTest {
 
         int insert = userMapper.insert(user);
 
-        System.out.println("影响记录数:"+insert);
+        System.out.println("影响记录数:" + insert);
     }
 
     @Test
-    public void insertTest2(){
+    public void insertTest2() {
         User user = new User();
 
         user.setName("张强123");
@@ -56,7 +59,7 @@ public class SimpleTest {
         user.setAge(22);
         int insert = userMapper.insert(user);
 
-        System.out.println("影响记录数:"+insert);
+        System.out.println("影响记录数:" + insert);
     }
 
 }
