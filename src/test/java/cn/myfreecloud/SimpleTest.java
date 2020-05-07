@@ -36,30 +36,20 @@ public class SimpleTest {
         list.forEach(System.out::println);
     }
 
+    /**
+     * mp的基本插入方法
+     */
     @Test
-    public void insertTest() {
+    public void insertTest(){
         User user = new User();
 
-        user.setName("张强");
+        user.setName("测试名字");
+        user.setAge(18);
         user.setManagerId(1088248166370832385L);
         user.setCreateTime(LocalDateTime.now());
 
         int insert = userMapper.insert(user);
 
-        System.out.println("影响记录数:" + insert);
+        System.out.println("影响记录数:"+insert);
     }
-
-    @Test
-    public void insertTest2() {
-        User user = new User();
-
-        user.setName("张强123");
-        user.setManagerId(1088248166370832385L);
-        user.setCreateTime(LocalDateTime.now());
-        user.setAge(22);
-        int insert = userMapper.insert(user);
-
-        System.out.println("影响记录数:" + insert);
-    }
-
 }

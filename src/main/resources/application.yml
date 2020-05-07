@@ -11,4 +11,10 @@ logging:
     root: warn
     cn.myfreecloud.mapper: trace
   pattern:
-    console: '%p%m%n'
+    # 日志级别,日志内容,换行
+    console: '%p %d{YYYY-MM-dd HH:mm:ss,SSS} %m %n'
+#    console: '%-5p %d{MM-dd HH:mm:ss,SSS} %m  (%F:%L) \n'
+
+
+mybatis-plus:
+  mapper-locations: classpath*:cn/myfreecloud/mapper/*.xml
