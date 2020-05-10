@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SimpleTest {
+public class AAASimpleTest {
 
     @Autowired
     private UserMapper userMapper;
@@ -31,7 +31,7 @@ public class SimpleTest {
     public void selest() {
         List<User> list = userMapper.selectList(null);
 
-        Assert.assertEquals(8, list.size());
+        Assert.assertEquals(5, list.size());
 
         list.forEach(System.out::println);
     }
@@ -45,11 +45,16 @@ public class SimpleTest {
 
         user.setName("测试名字");
         user.setAge(18);
+        // 这里邮箱为空,mp生成sql语句的时候不会设置这个值,也不会有这个字段
         user.setManagerId(1088248166370832385L);
         user.setCreateTime(LocalDateTime.now());
 
+        user.setRemark("巴拉巴拉巴拉");
         int insert = userMapper.insert(user);
+
+        Assert.assertEquals(1,insert);
 
         System.out.println("影响记录数:"+insert);
     }
+
 }

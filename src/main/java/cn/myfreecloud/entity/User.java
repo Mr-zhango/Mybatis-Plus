@@ -35,10 +35,10 @@ public class User {
 
     /**
      *  排除表中的某些字段3种方式
-     *  private transient  String remark;
+     *  private transient  String remark;  不参与序列化
      *
      *   @TableField(exist = false)
-     *   private static String remark;
+     *   private static String remark;     每个对象一个,mp忽略
      *
      */
 

@@ -2,7 +2,6 @@ package cn.myfreecloud;
 
 import cn.myfreecloud.entity.User;
 import cn.myfreecloud.mapper.UserMapper;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -15,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StringUtils;
 
-import java.security.Principal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +26,7 @@ import java.util.Map;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class QueryTest {
+public class BBBQueryTest {
 
     @Autowired
     UserMapper userMapper;
@@ -58,7 +56,7 @@ public class QueryTest {
     }
 
     /**
-     *
+     * map 类型的参数
      */
     @Test
     public void queryByMap() {
