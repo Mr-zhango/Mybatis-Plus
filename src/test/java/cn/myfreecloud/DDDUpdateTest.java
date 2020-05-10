@@ -2,21 +2,15 @@ package cn.myfreecloud;
 
 import cn.myfreecloud.entity.User;
 import cn.myfreecloud.mapper.UserMapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author: zhangyang
@@ -25,7 +19,7 @@ import java.util.Map;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UpdateTest {
+public class DDDUpdateTest {
 
     @Autowired
     UserMapper userMapper;
@@ -55,9 +49,11 @@ public class UpdateTest {
     public void updateByWrapper() {
 
 
+        // 查询条件
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("name","李艺伟").eq("age",28);
 
+        // 更新的值
         User user = new User();
         user.setEmail("lyw2019@baomidou.com");
         user.setAge(29);
@@ -74,7 +70,9 @@ public class UpdateTest {
     public void updateByWrapperQuick() {
 
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("name","李艺伟").eq("age",29)
+        updateWrapper
+                .eq("name","李艺伟")
+                .eq("age",29)
                 .set("age",21);
 
         int update = userMapper.update(null, updateWrapper);
@@ -90,7 +88,10 @@ public class UpdateTest {
     @Test
     public void updateByWrapperLambda() {
         LambdaUpdateWrapper<User> lambdaUpdateWrapper = Wrappers.lambdaUpdate();
-        lambdaUpdateWrapper.eq(User::getName,"李艺伟").eq(User::getAge,21).set(User::getAge,30);
+        lambdaUpdateWrapper
+                .eq(User::getName,"李艺伟")
+                .eq(User::getAge,21)
+                .set(User::getAge,30);
 
         int update = userMapper.update(null, lambdaUpdateWrapper);
         System.out.println(update);
@@ -102,7 +103,11 @@ public class UpdateTest {
      */
     @Test
     public void updateByWrapperLambdaChain() {
-        boolean update = new LambdaUpdateChainWrapper<User>(userMapper).eq(User::getName, "李艺伟").eq(User::getAge,30).set(User::getAge, 31).update();
+        boolean update = new LambdaUpdateChainWrapper<User>(userMapper)
+                .eq(User::getName, "李艺伟")
+                .eq(User::getAge,30)
+                .set(User::getAge, 31)
+                .update();
         System.out.println(update);
     }
 }
