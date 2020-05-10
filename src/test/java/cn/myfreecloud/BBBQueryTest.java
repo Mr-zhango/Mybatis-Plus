@@ -79,6 +79,7 @@ public class BBBQueryTest {
 
 
     /**
+     *  条件构造器的使用
      * 1.姓名中包含雨并且年龄小于40的人
      */
     @Test
@@ -115,7 +116,10 @@ public class BBBQueryTest {
     }
 
     /**
-     * 3.姓名为王姓或者年龄大于等于25,按照年龄降序排列,年龄相同的按照id升序排列
+     * 3.
+     * 姓名为王姓
+     *  或者
+     * 年龄大于等于25,按照年龄降序排列,年龄相同的按照id升序排列
      * name like '王%' or age >=25 order by age desc,id asc
      */
     @Test
@@ -125,6 +129,7 @@ public class BBBQueryTest {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 
         QueryWrapper<User> userQueryWrapper = queryWrapper
+                // something %
                 .likeRight("name", "王")
                 .or()
                 // >=
@@ -161,7 +166,8 @@ public class BBBQueryTest {
     }
 
     /**
-     * 5.名字为王姓并且 (年龄小于40或者邮箱不为空)
+     * 5.名字为王姓
+     * 并且 (年龄小于40或者邮箱不为空)
      * "name like '王%' and (age < 40 or email is not null)"
      */
     @Test
@@ -171,7 +177,12 @@ public class BBBQueryTest {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 
         queryWrapper
-                .likeRight("name", "王").and(qw -> qw.lt("age", 40).or().isNotNull("email"));
+                .likeRight("name", "王")
+                .and(
+                        qw -> qw.lt("age", 40)
+                                .or()
+                                .isNotNull("email")
+                );
 
         List<User> users = userMapper.selectList(queryWrapper);
 
@@ -180,8 +191,11 @@ public class BBBQueryTest {
     }
 
     /**
-     * 6.名字为王姓 或者 (年龄小于40并且年龄大于20并且邮箱不为空)
-     * "name like '王%' or (age < 40 and age >20 and email is not null)"
+     * 6.名字为王姓
+     * 或者 (年龄小于40并且年龄大于20并且邮箱不为空)
+     *
+     * "name like '王%'
+     * or (age < 40 and age >20 and email is not null)"
      */
     @Test
     public void queryByWrapper6() {
@@ -207,7 +221,7 @@ public class BBBQueryTest {
     /**
      * 7.(年龄小于40 或者 邮箱不为空) 并且名字为王姓的
      * "(age < 40 and email is not null) and name like '王%' or "
-     * 前括号 nested
+     * 前括号 开头的时候使用 nested
      */
     @Test
     public void queryByWrapper7() {
@@ -230,7 +244,7 @@ public class BBBQueryTest {
 
 
     /**
-     * 8.年龄为30.31.34.35
+     * 8.年龄为30 31 34 35
      * "age in (30,31,34,35)"
      * .in("age", Arrays.asList(30,31,34,35));
      */
@@ -253,6 +267,7 @@ public class BBBQueryTest {
      * 9.返回满足条件的一个数据
      * "limit 1"
      * 加到最后 last函数 .last("limit 1");
+     * last 里面的参数有sql注入的风险
      */
     @Test
     public void queryByWrapper9() {
@@ -294,7 +309,7 @@ public class BBBQueryTest {
     /**
      * 11.名字中包含雨并且年龄小于40
      * "name like '%雨%' and age < 40"
-     * 部分排除
+     * 部分排除 create_time manager_id
      * 加到最后 last函数
      */
     @Test
@@ -365,7 +380,8 @@ public class BBBQueryTest {
 //        }
 
         // 使用mp之后的简化写法
-        queryWrapper.like(!StringUtils.isEmpty(name), "name", name)
+        queryWrapper
+                .like(!StringUtils.isEmpty(name), "name", name)
                 .like(!StringUtils.isEmpty(email), "email", email);
 
         List<User> userList = userMapper.selectList(queryWrapper);
@@ -390,6 +406,22 @@ public class BBBQueryTest {
         //两个查询不影响   注意条件重复问题
         queryWrapper
                 .like("name", "雨").le("age", 40);
+
+        List<User> users = userMapper.selectList(queryWrapper);
+
+        users.forEach(System.out::println);
+
+    }
+
+    @Test
+    public void queryByWrapperEntitySql() {
+
+        //条件查询 map中的键就是数据库中的列(重点)
+        User whereUser = new User();
+        whereUser.setName("刘红雨");
+        whereUser.setAge(32);
+
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>(whereUser);
 
         List<User> users = userMapper.selectList(queryWrapper);
 
@@ -428,6 +460,8 @@ public class BBBQueryTest {
     }
 
 
+    // 返回map的查询方法 使用 null比较多,或者是使用字段少的情况
+    // 或者是用在下一个例子上
     @Test
     public void selectByWrapperMaps() {
 
@@ -444,7 +478,7 @@ public class BBBQueryTest {
 
     /**
      * 按照直属上级进行分组,查询每组的平均年龄,最大年龄,最小年龄,并且只取年龄总和小于500的组
-     * <p>
+     *
      * select avg(age) avg_age ,min(age) min_age,max(age) max_age
      * from user
      * group by manager_id
@@ -463,7 +497,9 @@ public class BBBQueryTest {
         userList.forEach(System.out::println);
     }
 
-
+    /**
+     * selectObjs 这个方法只查询第一列的数据,其他的数据全部被舍弃了
+     */
     @Test
     public void selectByWrapperObjs() {
 
@@ -479,6 +515,9 @@ public class BBBQueryTest {
         userList.forEach(System.out::println);
     }
 
+    /**
+     * 查询符合条件的总记录数
+     */
     @Test
     public void selectByWrapperCount() {
 
@@ -506,7 +545,7 @@ public class BBBQueryTest {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 
         /**
-         * 用这个方法就不用设施查询列了,会自动count(1)
+         * 用这个方法就不用设置查询列了,会自动count(1)
          *
          * SELECT COUNT( 1 ) FROM user WHERE name LIKE ? AND age < ?
          */
@@ -523,7 +562,7 @@ public class BBBQueryTest {
     @Test
     public void selectLambda1() {
 
-        // 第一种构造方法
+        // 第一种构造方法 通过 普通条件构造器 .lambda();
         //LambdaQueryWrapper<Object> lambdaQueryWrapper = new QueryWrapper<>().lambda();
 
         // 第二种构造方法
@@ -534,7 +573,7 @@ public class BBBQueryTest {
 
         LambdaQueryWrapper<User> userLambdaQueryWrapper = Wrappers.lambdaQuery();
 
-        // 使用lambda表达式的好处就是防误写
+        // 使用lambda表达式的好处就是防误写 ,从对象中获取属性,防误写
         userLambdaQueryWrapper.like(User::getName, "雨").lt(User::getAge,40);
 
         List<User> userList = userMapper.selectList(userLambdaQueryWrapper);
@@ -551,12 +590,16 @@ public class BBBQueryTest {
     public void selectLambda2() {
 
         // 第一种构造方法
-        LambdaQueryWrapper<Object> lambdaQueryWrapper = new QueryWrapper<>().lambda();
+        //LambdaQueryWrapper<Object> lambdaQueryWrapper = new QueryWrapper<>().lambda();
         LambdaQueryWrapper<User> userLambdaQueryWrapper = Wrappers.lambdaQuery();
 
         // 使用lambda表达式的好处就是防误写
         userLambdaQueryWrapper.like(User::getName, "王")
-                .and(lqw -> lqw.lt(User::getAge,40).or().isNotNull(User::getEmail));
+                .and(lqw -> lqw
+                        .lt(User::getAge,40)
+                        .or()
+                        .isNotNull(User::getEmail)
+                );
 
         List<User> userList = userMapper.selectList(userLambdaQueryWrapper);
 
@@ -582,12 +625,18 @@ public class BBBQueryTest {
     @Test
     public void selectLambdaMy() {
         // 第一种构造方法
-        LambdaQueryWrapper<Object> lambdaQueryWrapper = new QueryWrapper<>().lambda();
+        //LambdaQueryWrapper<Object> lambdaQueryWrapper = new QueryWrapper<>().lambda();
         LambdaQueryWrapper<User> userLambdaQueryWrapper = Wrappers.lambdaQuery();
 
         // 使用lambda表达式的好处就是防误写
-        userLambdaQueryWrapper.like(User::getName, "王")
-                .and(lqw -> lqw.lt(User::getAge,40).or().isNotNull(User::getEmail));
+        userLambdaQueryWrapper
+                .like(User::getName, "王")
+                .and(
+                        lqw -> lqw
+                                .lt(User::getAge,40)
+                                .or()
+                                .isNotNull(User::getEmail)
+                );
 
         List<User> userList = userMapper.selectAll(userLambdaQueryWrapper);
 

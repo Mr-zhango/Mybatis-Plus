@@ -17,7 +17,8 @@ import java.util.List;
  */
 public interface UserMapper extends BaseMapper<User> {
 
-    /*@Select("select * from user ${ew.customSqlSegment}")*/
+    /*ew 是固定的  String WRAPPER = "ew"; */
+   /* @Select("select * from user ${ew.customSqlSegment}")   写到mapper文件中一样*/
     List<User> selectAll(@Param(Constants.WRAPPER) Wrapper<User> wrapper);
 
     IPage<User> selectUserPage(Page<User> page,@Param(Constants.WRAPPER) Wrapper<User> wrapper);

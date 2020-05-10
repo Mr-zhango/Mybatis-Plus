@@ -25,6 +25,7 @@ public class User {
     @TableField(value = "name",condition = SqlCondition.LIKE ,exist = true)
     private String name;
 
+    @TableField(condition = "%s&lt;=#{%s}")
     private Integer age;
 
     private String email;
