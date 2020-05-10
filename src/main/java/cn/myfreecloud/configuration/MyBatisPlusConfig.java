@@ -16,6 +16,7 @@ public class MyBatisPlusConfig {
 
     @Bean
     public PaginationInterceptor paginationInterceptor(){
+        // 引入分页插件
         return new PaginationInterceptor();
     }
 }
