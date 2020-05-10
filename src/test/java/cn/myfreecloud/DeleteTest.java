@@ -2,18 +2,15 @@ package cn.myfreecloud;
 
 import cn.myfreecloud.entity.User;
 import cn.myfreecloud.mapper.UserMapper;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,19 +30,25 @@ public class DeleteTest {
      * 根据id进行删除
      */
     @Test
-    public void updateByIds() {
+    public void deleteByIds() {
         int i = userMapper.deleteById(1184693036882415618L);
         System.out.println(i);
     }
 
     @Test
-    public void updateByMap() {
+    public void deleteByMap() {
         Map<String,Object> columnMap = new HashMap<>();
 
         columnMap.put("name","刘黑雨");
         columnMap.put("age",21345);
 
         int i = userMapper.deleteByMap(columnMap);
+        System.out.println(i);
+    }
+
+    @Test
+    public void deleteBatchIds() {
+        int i = userMapper.deleteBatchIds(Arrays.asList(1259453021021073409L,1259453157449154562L));
         System.out.println(i);
     }
 
